@@ -1,9 +1,5 @@
 # Báo cáo cá nhân — 2A202603914_TranGiaBao
 
-> Đổi tên file theo quy tắc `2A202603914_TranGiaBao.md`, ví dụ `20241234_NguyenVanAn.md` (MSSV trước, dấu `_`, họ tên viết liền không dấu). Sửa cả dòng tiêu đề phía trên cho khớp.
-> Template chi tiết và prompt mẫu cho từng mục: [docs/01-worksheet.md](../../docs/01-worksheet.md).
-> Mỗi thành viên một file trong `report/individual/` trên repo nhóm: copy template này thành file mới, điền, rồi commit bằng tài khoản GitHub của bạn. Không viết hộ người khác.
-
 ## 1. Thông tin học viên
 
 - Họ tên: Trần Gia Bảo
@@ -28,6 +24,8 @@
 | 6 | Lặp lại | Khi kết nối một mô hình AI local với cơ sở dữ liệu của khách, tôi muốn kiểm soát truy vấn được phép chạy, để tránh thao tác sai hoặc lộ dữ liệu nhạy cảm. | Developer, quản trị hệ thống, khách hàng | Cần kiểm tra cấu hình quyền của tài khoản DB, log truy vấn và các tình huống bị chặn. |
 | 7 | Đọc, tổng hợp nhiều thông tin | Khi một câu hỏi được diễn đạt theo nhiều cách, tôi muốn nhận kết quả nhất quán và có thể kiểm tra nguồn dữ liệu, để tin tưởng số liệu dùng ra quyết định. | Người dùng nghiệp vụ, người kiểm tra dữ liệu | Cần thử các cách diễn đạt tương đương và so sánh SQL/kết quả với truy vấn chuẩn. |
 | 8 | Pain từ người khác | Khi khách hàng muốn chạy AI trên hạ tầng nội bộ, tôi muốn biết rõ giới hạn phần cứng, tốc độ phản hồi và cách phân quyền, để triển khai được mà không phụ thuộc gửi dữ liệu lên dịch vụ ngoài. | IT khách hàng, developer, quản trị bảo mật | Cần bổ sung thông số máy local, thời gian phản hồi và yêu cầu bảo mật thực tế nếu được phép công khai. |
+
+**Phân loại bằng chứng:** Dấu hiệu ở các dòng #1–#4, #7–#8 hiện chủ yếu là **câu hỏi cần xác minh**, không phải số liệu đã ghi nhận. Dòng #5–#6 gắn với đầu việc kỹ thuật từ dự án đã tham gia nhưng chưa kèm log/test case có thể công khai. Vì vậy **không coi 8 dòng đều đã có bằng chứng đo được**; chỉ được bổ sung baseline sau khi kiểm tra dữ liệu thật, ẩn danh và được phép chia sẻ. Đối với từng Job Story, cách đo được đề xuất là số yêu cầu/tuần, thời gian chờ từ yêu cầu đến khi có kết quả, số vòng sửa SQL, tỷ lệ truy vấn đúng theo bộ test và số sự kiện bị chặn do phân quyền.
 
 **Phân biệt phạm vi trải nghiệm:** Tôi có trải nghiệm triển khai bài toán Text-to-SQL và cấu hình AI local. Các tình huống liên quan đến việc nhân viên kinh doanh phải chờ báo cáo, cách họ xem doanh thu hoặc việc báo cáo bị hiểu sai là **giả thuyết về người dùng**, cần xác nhận qua trao đổi hoặc dữ liệu công việc; không xem đây là bằng chứng khách đã gặp.
 
@@ -109,6 +107,8 @@ KIỂM CHỨNG KẾT QUẢ — cần đo thời gian và độ chính xác
 → [4 Chạy SQL] → [5 Đối chiếu truy vấn chuẩn] ← BƯỚC CẦN ĐO
 → [6 Ghi lỗi/cập nhật test case]
 ```
+
+**Lưu ý về thời gian trong 3 quy trình CP2:** Ký hiệu `?'` thể hiện **chưa đo thực tế**, không phải 0 phút. Khi có log/ticket được phép sử dụng, ghi mốc bắt đầu/kết thúc từng bước để tính số phút; tránh tự gán số ước lượng thành quan sát. Bộ kiểm thử đối với card #2 và #3 có thể tạo từ schema và truy vấn mẫu đã được xác nhận, nhưng tỷ lệ 90% trong bảng hiện chỉ là **target đề xuất**.
 
 ### Card muốn pitch nhất
 
@@ -193,4 +193,6 @@ Vấn đề nhóm chọn là việc phát hiện và phản ứng sự cố hạ
 - [Đề bài CHECKPOINTS](../../CHECKPOINTS.md)
 - [Quy định sử dụng AI](../../RULES.md)
 - [Rubric](../../RUBRIC.md)
-- [Bổ sung nguồn tài liệu hoặc hồ sơ QC được phép sử dụng sau khi xác minh]
+- [Báo cáo nhóm HEHEHE — CP3–CP6](../team/group_report.md)
+- [Tổng hợp phỏng vấn CP4 (nhóm thực hiện)](../assets/cp4-interview-tonghop.md)
+- [Tài liệu quy trình CP5–CP6 của nhóm](../assets/2A202603937_cp5_cp6_workflow_and_ai_level.md)
