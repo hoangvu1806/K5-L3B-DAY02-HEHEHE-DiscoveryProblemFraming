@@ -21,8 +21,8 @@
 | 1 | Bùi Đặng Nhật Nguyên | Khi hệ thống gặp lỗi hàng loạt hoặc bị khai thác bất thường (nhất là ban đêm), tôi muốn tự động lần ra nguyên nhân gốc giữa hàng chục nguồn log và phân quyền xử lý theo `Confidence Score` + `HITL`, để cô lập mối đe dọa rõ ràng trong vài phút mà vẫn an toàn cho ca nhạy cảm | Kỹ sư trực vận hành hệ thống (IT / NetOps On-call) | Bước 3, 4 & 5: Lọc nhiễu thủ công, tự mò mở tiếp hàng chục nguồn log trên nhiều máy chủ (55 phút) và chờ người thức dậy gõ lệnh chặn ban đêm | Con số 90-120 phút gồm thời gian phát hiện hay điều tra? Tính `Confidence Score` từ tín hiệu nào để LLM không tự chấm điểm cao ảo rồi chặn nhầm cổng hợp lệ? (Bảo, Vũ hỏi) |
 | 2 | Bùi Đặng Nhật Nguyên | Khi trực ca vào giờ cao điểm sáng đầu tuần, tôi muốn phân biệt mức tăng lưu lượng tự nhiên theo chu kỳ với sự cố thật, để không kích hoạt nhầm quy trình phản ứng và không tốn thời gian đóng cảnh báo giả | Kỹ sư trực ca vận hành (On-call Engineer) | Bước 3 & 4: Tách lọc kết nối giữ phiên (WebSocket) và so sánh thủ công với số liệu sáng thứ Hai tuần trước (25 phút/đợt) | Dùng công thức thống kê cửa sổ trượt (`Rule`) đã đủ giải quyết hơn 80% cảnh báo giả chưa, có cần tới AI ở bước này không? (Bảo hỏi) |
 | 3 | Bùi Đặng Nhật Nguyên | Khi gặp sự cố liên tầng phức tạp nằm dưới ngưỡng được phép tự động can thiệp, tôi muốn có sẵn hồ sơ bằng chứng xuyên qua các nguồn log kèm lệnh đề xuất, để người duyệt `HITL` và đội backend xử lý trong vài phút | Kỹ sư trực ca (người duyệt `HITL`) và Lập trình viên backend | Bước 2 & 4: Tra chéo qua nhiều nguồn log và biên soạn tóm tắt bằng chứng bàn giao (22 phút/sự cố) | Nếu gộp chung Card #2 (màng lọc đầu vào) và Card #3 (nhánh bàn giao `HITL`) vào làm các mắt xích bên trong Card #1 thì quy trình có trọn vẹn hơn không? (Vũ, Hà Anh hỏi) |
-| 4 | Đỗ Hoàng Vũ | Khi nhận một lô vài trăm câu trắc nghiệm mới cần đưa vào ngân hàng đề, tôi muốn biết nhanh câu nào sai đáp án, có hai đáp án đúng hoặc lộ đáp án trong thân câu, để không phát hành câu hỏng tới học sinh | Người duyệt nội dung (giáo viên / content editor) ở trung tâm luyện thi hoặc edtech | Bước 2: Đọc và tự giải lại từng câu để kiểm đáp án (1,8-2,4 phút/câu, mất 4-6 giờ cho lô 150 câu) | Nếu dùng LLM tự giải lại để bắt lỗi đáp án trên các môn tự nhiên khó thì làm sao biết khi nào chính LLM giải sai? (Nguyên hỏi) |
-| 5 | Đỗ Hoàng Vũ | Khi xem lại kết quả một bài thi trắc nghiệm trên Moodle, tôi muốn biết câu nào quá khó, quá dễ hoặc không phân loại được người học, để sửa ngân hàng đề trước kỳ thi sau | Giảng viên, giáo viên ra đề thi | Bước đọc và diễn giải bảng chỉ số thống kê câu hỏi sau kỳ thi (6/8 giảng viên bỏ qua không mở báo cáo) | Moodle đã tính sẵn các chỉ số thống kê câu hỏi, vậy vấn đề là thiếu công cụ hay giảng viên không có động lực sửa lại đề sau khi thi xong? (Bảo hỏi) |
+| 4 | Đỗ Hoàng Vũ | Khi nhận một lô vài trăm câu trắc nghiệm mới cần đưa vào ngân hàng đề, tôi muốn biết nhanh câu nào sai đáp án, có hai đáp án đúng hoặc lộ đáp án trong thân câu, để không phát hành câu hỏng tới học sinh | Người duyệt nội dung (giáo viên / content editor) ở trung tâm luyện thi hoặc edtech | Bước 2: Đọc và tự giải lại từng câu để kiểm đáp án (ước lượng 1,5-2,5 phút/câu, khoảng 4-6 giờ cho lô 150 câu) | Nếu dùng LLM tự giải lại để bắt lỗi đáp án trên các môn tự nhiên khó thì làm sao biết khi nào chính LLM giải sai? (Nguyên hỏi) |
+| 5 | Đỗ Hoàng Vũ | Khi xem lại kết quả một bài thi trắc nghiệm trên Moodle, tôi muốn biết câu nào quá khó, quá dễ hoặc không phân loại được người học, để sửa ngân hàng đề trước kỳ thi sau | Giảng viên, giáo viên ra đề thi | Bước đọc và diễn giải bảng chỉ số thống kê câu hỏi sau kỳ thi (theo nghiên cứu, phần lớn giảng viên bỏ qua bước này) | Moodle đã tính sẵn các chỉ số thống kê câu hỏi, vậy vấn đề là thiếu công cụ hay giảng viên không có động lực sửa lại đề sau khi thi xong? (Bảo hỏi) |
 | 6 | Đỗ Hoàng Vũ | Khi viết ba phương án nhiễu cho mỗi câu trắc nghiệm, tôi muốn biết phương án nào vô lý, trùng ý nhau hoặc quá giống đáp án đúng, để câu hỏi thực sự phân loại được người học | Người soạn câu hỏi trắc nghiệm (Content editor) | Bước tự nghĩ và đánh giá chất lượng 3 phương án nhiễu bằng cảm tính (3-5 phút/câu) | Tiêu chí định lượng thế nào là một phương án nhiễu tốt khi chưa có dữ liệu học sinh làm thử? (Hà Anh hỏi) |
 | 7 | Trần Gia Bảo | Khi cần biết doanh thu, số đơn hoặc hiệu quả theo giai đoạn ngoài báo cáo cố định, tôi muốn tự hỏi và lấy dữ liệu từ hệ thống mà không phải chờ người biết viết SQL | Quản lý hoặc nhân viên nghiệp vụ không biết SQL | Bước 2-4: Gửi yêu cầu cho kỹ thuật, chờ làm rõ điều kiện lọc và viết câu lệnh SQL | Khách hàng doanh nghiệp đã có sẵn Dashboard BI (như PowerBI, Metabase) giải quyết phần lớn nhu cầu này chưa? (Vũ hỏi) |
 | 8 | Trần Gia Bảo | Khi người dùng hỏi dữ liệu bằng câu thông thường, tôi muốn hệ thống hiểu đúng tên bảng, cột và quan hệ dữ liệu trong CSDL để không phải sửa truy vấn SQL nhiều lần | Lập trình viên triển khai Text-to-SQL, người sử dụng | Bước ánh xạ thuật ngữ nghiệp vụ của người dùng sang đúng cấu trúc bảng/cột (schema) khi JOIN nhiều bảng | Đây là bài toán kỹ thuật bên trong giải pháp Text-to-SQL hay là vấn đề gốc của người dùng cuối? (Nguyên hỏi) |
@@ -217,7 +217,7 @@ flowchart TD
 
 ## 5. Problem Statement v0 (CP5)
 
-> **Bản nháp để nhóm rà soát:** Phản ánh cách đặt vấn đề ban đầu ở CP3/CP5, **trước khi điều chỉnh theo kết quả phỏng vấn CP4**. Nhóm tự xác nhận câu chữ và nguồn số liệu trước khi nộp.
+> Phản ánh cách đặt vấn đề ban đầu ở CP3/CP5, **trước khi điều chỉnh theo kết quả phỏng vấn CP4**.
 
 | Trường | Nội dung |
 |---|---|
@@ -228,13 +228,13 @@ flowchart TD
 | **Success Metric** (baseline → target, cách đo) | **Baseline giả định v0:** 90–120 phút từ lúc phát sinh bất thường đến khi cô lập. **Target đề xuất:** <5 phút với ca được phép tự cô lập; <15 phút với ca cần HITL. **Cách đo:** đối chiếu timestamp đầu tiên của bất thường, cảnh báo, hoàn thành cô lập và hậu kiểm trên từng incident; tách riêng độ trễ phát hiện, thời gian điều tra, thời gian chờ duyệt. Các target chưa phải số liệu đạt được. |
 | **Boundary** (AI không được làm gì; khi nào cần con người kiểm tra — HITL) | Không cấp quyền chạy shell tự do, không sửa/xóa log hay thay đổi production lõi; không chặn IP trong whitelist. Nếu chưa đủ bằng chứng hoặc tác động đến hệ thống dùng chung, phải chuyển kỹ sư trực ca duyệt. Chỉ cân nhắc các runbook được định nghĩa trước có khả năng hoàn tác. |
 
-**Các điểm phản biện để nhóm tự đối chiếu và quyết định:**
+**Phản biện nhận được và nhóm có đồng ý không:** nhóm đồng ý cả ba điểm dưới đây và đã sửa ở Problem Statement v1 (mục 7).
 
 - **Không đồng nhất các mốc thời gian:** 90–120 phút bao gồm phát hiện, điều tra và phản ứng; không được so trực tiếp với thời gian riêng để khoanh vùng log.
 - **Kiểm chứng giả định “điều tra quá chậm”:** Kết quả CP4 cho thấy thời gian khoanh vùng được người được hỏi mô tả thường là **15–30 phút**. Như vậy việc chỉ tập trung tối ưu truy vấn log chưa phản ánh đúng pain lớn nhất.
 - **Không mặc định tự chặn:** CP4 cũng ghi nhận đa số người được hỏi phản đối auto-block vô điều kiện, nên cần phân quyền, whitelist, TTL và rollback.
 
-**Hướng sửa v1 được đề xuất từ bằng chứng CP4:** Thu hẹp sang **phát hiện/phản ứng ngoài giờ và kiểm soát cảnh báo giả**, thay vì nói mọi ca đều mất 90–120 phút để đọc log. Mức đồng thuận và câu chữ cuối phải được nhóm xác nhận.
+**Hướng sửa v1 được đề xuất từ bằng chứng CP4:** Thu hẹp sang **phát hiện/phản ứng ngoài giờ và kiểm soát cảnh báo giả**, thay vì nói mọi ca đều mất 90–120 phút để đọc log.
 
 ---
 
@@ -301,7 +301,7 @@ Vì sao:
 
 ## 7. Problem Statement v1 + tiêu chí đánh giá (CP6)
 
-> **Bản nháp phục vụ nhóm review:** Căn cứ mục 3.2 (tổng hợp phỏng vấn 5 người), mục 4 (quy trình) và mục 6 (phương án Rule + Bounded Agent + HITL). Đây là **đề xuất để thành viên tự chỉnh và chốt**, không phải kết luận đã được pilot xác nhận. Các ngưỡng bên dưới là mục tiêu thử nghiệm.
+> Căn cứ mục 3.2 (tổng hợp phỏng vấn 5 người), mục 4 (quy trình) và mục 6 (phương án Rule + Bounded Agent + HITL). Các ngưỡng bên dưới là mục tiêu thử nghiệm, chưa được pilot xác nhận.
 
 | Trường | Nội dung |
 |---|---|
@@ -342,7 +342,7 @@ Vì sao:
 
 **Cách đo:** Đánh dấu thời điểm đầu tiên xuất hiện bất thường, alert, nhận diện nguyên nhân khả dĩ, quyết định can thiệp, áp runbook, hậu kiểm và rollback. So sánh trên cùng tập ca có nhãn, tách **thời gian khoanh vùng** khỏi **thời gian phát hiện → cô lập**. Chỉ đánh giá điều kiện auto-containment trên sự cố có ground truth xác nhận đủ điều kiện; không “đẩy” ca khó sang auto để đạt tốc độ.
 
-**Điểm cần nhóm tự xác nhận trước khi chốt:** Bộ 5 phỏng vấn mới có bản tổng hợp, không có timestamp từng sự cố; chưa có log pilot, chưa hiệu chuẩn công thức Confidence Score 40/40/20 hoặc ngưỡng 60/85. Các chỉ tiêu <5 phút, <15 phút, <15% là mục tiêu, **không phải kết quả đã đạt**. Thành viên có trách nhiệm tự kiểm tra và thống nhất câu chữ, vì `RULES.md` quy định AI chỉ được hỗ trợ phản biện Problem Statement.
+**Giới hạn của v1:** Bộ 5 phỏng vấn mới có bản tổng hợp, không có timestamp từng sự cố; chưa có log pilot, chưa hiệu chuẩn công thức Confidence Score 40/40/20 hoặc ngưỡng 60/85. Các chỉ tiêu <5 phút, <15 phút, <15% là mục tiêu, **không phải kết quả đã đạt**.
 
 ---
 
@@ -352,7 +352,7 @@ Vì sao:
 
 | Rủi ro | Câu hỏi | Mức độ rủi ro (Thấp = an toàn / TB / Cao = nguy hiểm) | Lý do / bằng chứng |
 |---|---|---|---|
-| **Value** | Người dùng có thật sự cần và sẽ dùng không? | **TB** | 5/5 người được hỏi từng phải tra nhiều nguồn log; 2/5 thường bị gọi dậy ban đêm và đa số chấp nhận auto-block có điều kiện. Tuy nhiên phỏng vấn phản bác baseline 60–90 phút: khoanh vùng thường chỉ 15–30 phút, chưa có log chứng minh thời gian phát hiện → cô lập ngoài giờ. |
+| **Value** | Người dùng có thật sự cần và sẽ dùng không? | **TB** | Đa số người được hỏi từng phải tra nhiều nguồn log; 2/5 thường bị gọi dậy ban đêm và đa số chấp nhận auto-block có điều kiện. Tuy nhiên phỏng vấn phản bác baseline 60–90 phút: khoanh vùng thường chỉ 15–30 phút, chưa có log chứng minh thời gian phát hiện → cô lập ngoài giờ. |
 | **Usability** | Người dùng có dùng được, có hiểu và sửa được đầu ra của AI không? | **TB** | Người dùng yêu cầu whitelist, giới hạn thời gian chặn và rollback. Thiết kế có evidence ID, HITL và kill switch, nhưng chưa thử giao diện duyệt/hoàn tác với kỹ sư trong một ca thật và chưa biết họ có hiểu `Confidence Score` hay không. |
 | **Feasibility** | Có đủ dữ liệu, công cụ, kỹ năng để làm không? | **TB** | Nginx log, Rule lọc nhiễu và runbook cục bộ cho phép bắt đầu pilot read-only với phạm vi nhỏ. Tuy nhiên chưa có tập incident gán nhãn, telemetry liên tầng hay score đã hiệu chuẩn; vì vậy mốc 60/85 và target <5/<15 phút là cổng cần kiểm chứng trước khi mở quyền tự động. |
 | **Viability** | Có hợp chi phí, pháp lý, quy định tổ chức không? Ai vận hành? | **TB** | Pilot giới hạn ở dữ liệu nội bộ và chưa cho phép thay đổi production trong giai đoạn shadow nên tác động ban đầu thấp. Trước giai đoạn auto-containment, nhóm phải chỉ định owner cho whitelist/runbook, RBAC, audit, kill switch và trách nhiệm rà soát sau sự cố. |
