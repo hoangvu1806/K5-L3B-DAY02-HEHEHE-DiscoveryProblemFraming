@@ -140,7 +140,7 @@ Mỗi thành viên tự điền mục của mình.
 
 **Bằng chứng** (phần nào trong `group_report.md`, file nào trong `report/assets/`, commit nào):
 
-- Báo cáo cá nhân: `report/individual/2A202603887_TranThiHaAnh.md` (CP1–CP2 ở commit `3edf93a`; nhật ký CP3–CP6, bảng dùng AI và phần việc nhóm ở commit `aaab6fb`).
+- Báo cáo cá nhân: `report/individual/2A202603887_TranThiHaAnh.md` (CP1–CP2 ở commit `3edf93a`; nhật ký CP3–CP6, bảng dùng AI và phần việc nhóm ở commit `aaab6fb`; CP7 ở commit `ff7cdf0`).
 - Báo cáo nhóm: mục `3.3 Research giải pháp đã có`, mục `8.1 Bốn rủi ro`, mục `8.2 Kết luận`, mục `9 Hạn chế` và mục `10 Tài liệu tham khảo` trong `report/team/group_report.md`.
 - Bằng chứng kiểm chứng dùng để ra quyết định: `report/assets/cp4-interview-tonghop.md`.
 
