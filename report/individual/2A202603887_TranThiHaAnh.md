@@ -184,18 +184,31 @@ Trả lời bằng trải nghiệm thật của bạn, tối thiểu 200 từ ch
 
 **6.1. Tôi học được gì khi nghe top 3 problems của các bạn khác?**
 
+Khi nghe các bạn pitch, tôi chú ý nhất đến bài toán AIOps của Nhật Nguyên và Text-to-SQL của Gia Bảo. Bài AIOps cho tôi thấy đường điều tra có thể thay đổi theo loại sự cố nên Agent có thể hữu ích, nhưng quyền của Agent phải được giới hạn. Bài Text-to-SQL giúp tôi nhận ra một thử thách kỹ thuật chỉ có giá trị khi gắn với pain thật của người dùng nghiệp vụ. Từ đó, tôi hiểu rằng trước khi so sánh candidate, nhóm phải tách problem khỏi solution, xác định rõ actor, thời điểm xảy ra pain và một bottleneck đo được. Candidate có điểm cao vẫn có thể không được chọn nếu bằng chứng còn yếu hoặc mức can thiệp không phù hợp.
+
 **6.2. Nhóm có lúc nào bị "solution-first" (nghĩ giải pháp trước khi hiểu vấn đề) không? Lúc đó nhóm nhận ra và xử lý thế nào?**
+
+Nhóm đã có lúc solution-first khi gọi tên Agentic AI và Confidence Score trước khi xác nhận bottleneck và baseline. Ý tưởng tự chặn IP cũng xuất hiện trước khi nhóm hỏi người dùng chấp nhận tự động hóa trong điều kiện nào. Ngoài ra, con số 90–120 phút ban đầu được dùng như baseline dù chưa phân biệt thời gian phát hiện, khoanh vùng, cô lập và khắc phục. Nhóm xử lý bằng cách quay lại vẽ quy trình hiện tại, tách từng bottleneck và đối chiếu 5 phỏng vấn. Sau kiểm chứng, pain được chuyển trọng tâm sang phản ứng ngoài giờ và cảnh báo giả. Nhóm cũng so sánh No AI, Rule, Workflow và Agent, rồi thu hẹp pilot ở Nginx với HITL, whitelist, TTL và rollback.
 
 **6.3. Tôi có đổi ý sau khi bị phản biện không? Kể một lần cụ thể.**
 
+Ban đầu tôi nghĩ việc chấm code, viết nhận xét và tổng hợp lỗi của lớp nên sử dụng AI nhiều hơn. Khi nhận câu hỏi phản biện về Unit Test, Linter, taxonomy lỗi và Excel, tôi nhận ra phần lớn bước xác định trước có thể giải bằng Rule hoặc công cụ không dùng AI. Với tổng hợp lỗi, nếu giáo viên gắn mã lỗi ngay lúc chấm thì bảng tính đã có thể đếm tần suất. Vì vậy tôi đổi từ giả thuyết dùng AI cho toàn bộ quy trình sang phương án tách rõ: Rule xử lý phần có tiêu chí xác định, còn AI nếu dùng chỉ hỗ trợ giải thích hoặc soạn nháp và giáo viên vẫn duyệt kết quả cuối cùng.
+
 **6.4. Kết quả kiểm chứng (phỏng vấn/survey/research) có làm tôi bất ngờ không? Điều gì?**
+
+Điều làm tôi bất ngờ là thời gian khoanh vùng được người tham gia phỏng vấn nêu thường chỉ 15–30 phút, không xác nhận giả định 60–90 hoặc 90–120 phút ban đầu. Ngược lại, 2/5 người thường xuyên bị gọi dậy ban đêm, cho thấy pain ngoài giờ quan trọng hơn việc đọc log trong giờ hành chính. Đa số chấp nhận auto-block nhưng chỉ khi có whitelist, rollback và giới hạn thời gian. Khi research, tôi cũng thấy Datadog, Dynatrace và PagerDuty đã hỗ trợ anomaly detection, RCA hoặc orchestration, nhưng các khả năng đó không tự chứng minh rằng Agent nên được quyền thay đổi production. Kết quả này khiến tôi thận trọng hơn khi phân biệt khả năng phân tích với quyền thực thi.
 
 **6.5. Điều khó nhất khi viết Problem Statement là gì?**
 
+Điều khó nhất là giữ cho metric và bằng chứng không bị đánh tráo. Thời gian phát hiện, khoanh vùng, cô lập và khắc phục là những đại lượng khác nhau; không thể lấy baseline của một đại lượng để so với target của đại lượng khác. Nhóm cũng phải ghi rõ các ngưỡng dưới 5 phút, dưới 15 phút, false-alert dưới 15% và Confidence Score 60/85 là mục tiêu đề xuất, chưa phải kết quả đã đạt. Bên cạnh tốc độ, metric phải bảo vệ chất lượng và an toàn. Boundary cũng phải cụ thể: AI không được chạy shell tự do, không chạm whitelist hoặc dịch vụ lõi, và phải chuyển HITL khi chưa đủ điều kiện.
+
 **6.6. Nếu làm lại, tôi sẽ đổi gì? Tôi sẽ phản biện nhóm mạnh hơn ở điểm nào?**
+
+Nếu làm lại, tôi sẽ thu thập timestamp và log của incident thật trước khi chốt baseline, đồng thời thống nhất từ đầu định nghĩa phát hiện, khoanh vùng, cô lập và khắc phục. Tôi sẽ phản biện mạnh hơn lý do chọn Agent thay vì Workflow, yêu cầu công thức Confidence Score và lý do chọn các ngưỡng 60/85. Tôi cũng sẽ đề nghị chuẩn bị kiểm thử staging cho whitelist, RBAC, TTL, rollback và kill switch sớm hơn. Với candidate chấm bài của mình, tôi sẽ bấm giờ trên bài thật và thử Unit Test, Linter, taxonomy lỗi hoặc Excel trước khi đề xuất AI. Cách làm này giúp quyết định mức can thiệp dựa trên bằng chứng thay vì mức độ hấp dẫn của giải pháp.
 
 **6.7. Hiểu bài:** giải thích bằng 5–8 câu, không nhìn tài liệu, chuỗi *problem → quy trình → metric → boundary → mức can thiệp AI → quyết định* của bài nhóm mình.
 
+Problem nhóm chọn là phản ứng sự cố ngoài giờ bị chậm vì cảnh báo giả và nhiều nguồn log làm kỹ sư khó khoanh vùng an toàn. Quy trình bắt đầu từ nhận alert, lọc nhiễu, tra chéo nguồn log, xác định nguyên nhân khả dĩ, cô lập hoặc escalation, rồi hậu kiểm. Nhóm đo riêng thời gian phát hiện, khoanh vùng và cô lập, đồng thời theo dõi false-alert rate, Top-3 root-cause hit rate và số lần chặn nhầm. Boundary là không cho AI chạy shell tự do, không chạm whitelist hoặc dịch vụ lõi; mọi hành động phải dùng runbook định trước, có HITL, TTL, audit và rollback. Mức can thiệp được chọn là Rule để lọc nhiễu kết hợp Agent có giới hạn để chọn hướng điều tra, còn policy, runbook và con người kiểm soát quyền thực thi. Quyết định cuối là Go cho pilot có điều kiện: chạy shadow/read-only trước và chỉ mở auto-containment cục bộ khi đạt các cổng an toàn; nếu vi phạm ngưỡng dừng thì quay về Rule + Workflow read-only + HITL.
 ---
 
 ## 7. Tài liệu tham khảo
