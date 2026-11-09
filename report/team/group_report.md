@@ -361,7 +361,7 @@ Vì sao:
 
 **Quyết định:** **Go — pilot có điều kiện** tại tầng Nginx.
 
-**Lý do:** Cả 5 người được hỏi từng phải tra nhiều nguồn log, 2/5 thường bị gọi dậy ban đêm và đa số chấp nhận auto-block khi có whitelist, TTL và rollback. Bằng chứng này đủ để đầu tư vào một pilot nhỏ, có thể đảo ngược. Tuy nhiên chưa đủ để triển khai auto-containment rộng trong production, nên quyết định Go đi kèm phạm vi Nginx, triển khai theo hai giai đoạn, HITL và các cổng an toàn bắt buộc.
+**Lý do:** Đa số người được hỏi từng phải tra nhiều nguồn log, 2/5 thường bị gọi dậy ban đêm và đa số chấp nhận auto-block khi có whitelist, TTL và rollback. Bằng chứng này đủ để đầu tư vào một pilot nhỏ, có thể đảo ngược. Tuy nhiên chưa đủ để triển khai auto-containment rộng trong production, nên quyết định Go đi kèm phạm vi Nginx, triển khai theo hai giai đoạn, HITL và các cổng an toàn bắt buộc.
 
 **Nếu Go — pilot nhỏ nhất:** **Giai đoạn 1 — Shadow/read-only:** chạy 2 tuần trên tối thiểu 30 incident/alert lịch sử hoặc phát sinh mới; Agent chỉ đề xuất nguồn log, nguyên nhân, evidence ID và runbook, còn kỹ sư duyệt và thực hiện. **Giai đoạn 2 — Auto-containment giới hạn:** chỉ mở khi giai đoạn 1 đạt 100% kết luận quan trọng có bằng chứng, Top-3 root-cause hit rate ≥80%, false-alert rate <15%, không bỏ sót sự cố nghiêm trọng và 0 vi phạm quyền/whitelist. Quyền tự động chỉ gồm rate-limit hoặc chặn tạm IP ngoài whitelist bằng runbook định trước, TTL tối đa 15 phút, self-check sau 2 phút và rollback/kill switch.
 
