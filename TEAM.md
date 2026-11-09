@@ -3,7 +3,7 @@
 ## Thông tin nhóm
 
 - Tên nhóm: HEHEHE
-- Candidate problem nhóm chọn (1 câu): Kỹ sư trực ca vận hành mất 90-120 phút mỗi sự cố để lần mò thủ công qua hàng chục nguồn log rời rạc và thiếu cơ chế AI tự chủ có kiểm soát (Agentic AI phân quyền theo cột mốc `Confidence Score` kết hợp `HITL`) để vừa cô lập tức thì bất thường rõ bằng chứng vào ban đêm vừa giữ lại ca nhạy cảm chờ con người duyệt.
+- Candidate problem nhóm chọn (1 câu): Kỹ sư trực ca vận hành mất 15-30 phút để khoanh vùng tầng lỗi qua nhiều nguồn log rời rạc trong giờ hành chính, nhưng sự cố ngoài giờ (nhất là ban đêm) bị phát hiện và phản ứng rất trễ và thiếu cơ chế AI tự chủ có kiểm soát (Agentic AI phân quyền theo cột mốc `Confidence Score` kết hợp `HITL`) để vừa cô lập kịp thời bất thường rõ bằng chứng vào ban đêm vừa giữ lại ca nhạy cảm chờ con người duyệt.
 - Quyết định cuối (Go / Not Yet / No-Go): **Go — pilot có điều kiện** tại tầng Nginx, bắt đầu bằng shadow/read-only và chỉ mở auto-containment cục bộ sau khi đạt các cổng an toàn.
 
 ## Thành viên

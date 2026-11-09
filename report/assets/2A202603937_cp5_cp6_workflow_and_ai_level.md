@@ -9,10 +9,9 @@
 
 Phần này làm rõ các thông số thực tế để nhóm thống nhất khi viết `Problem Statement v0/v1`, `Eval` và `Quyết định`:
 
-1. **Con số "90-120 phút/sự cố" được cấu thành như thế nào?**
-   - Không phải thời gian lập trình viên viết code sửa lỗi lâu dài (Deployment/Patching), mà là **tổng thời gian từ lúc xuất hiện chuỗi lỗi bất thường đến lúc khoanh vùng đúng nguyên nhân gốc và cô lập tạm thời xong**:
-     - **Độ trễ phát hiện (`MTTD`: 30-60 phút):** Đặc biệt vào ban đêm hoặc ngoài giờ hành chính khi không có người trực màn hình, đội vận hành thường chỉ biết sự cố khi người dùng gửi ticket báo lỗi.
-     - **Thời gian điều tra và cô lập thủ công (`MTTI + MTTM`: 60-70 phút):** Gồm mở log cổng vào (`10 phút`), gõ lệnh lọc bỏ bản ghi nhiễu giữ phiên/cache (`20 phút`), đăng nhập tra chéo qua các nguồn log tường lửa, DNS, ứng dụng, database trên các máy chủ khác (`35 phút`), và gõ lệnh xử lý (`10 phút`).
+1. **Con số giả định v0 "90-120 phút/sự cố" và số liệu kiểm chứng CP4 "15-30 phút khoanh vùng" khác nhau như thế nào?**
+   - Ở giả định ban đầu (`v0`), con số 90-120 phút là ước lượng gộp cả **độ trễ phát hiện ngoài giờ (`MTTD`: 30-60 phút)** lẫn **thời gian điều tra và cô lập thủ công (`MTTI + MTTM`: giả định 55-70 phút)**.
+   - Sau khi kiểm chứng qua **5 buổi phỏng vấn ở CP4**, thời gian kỹ sư trực tiếp tra cứu log để khoanh vùng tầng gây lỗi trong giờ hành chính thực tế chỉ mất **15-30 phút** (gồm mở log cổng vào `3-5 phút`, lọc nhiễu `5-10 phút`, tra chéo các nguồn log tìm tầng lỗi `10-15 phút`), còn điểm nghẽn lớn nhất nằm ở **độ trễ phát hiện và phản ứng sự cố ngoài giờ/ban đêm** (2/5 người được hỏi thường bị gọi dậy giữa đêm cho cả sự cố thật lẫn cảnh báo giả).
 2. **Khi nào một sự cố được coi là "đã cô lập" (Contained/Isolated)?**
    - Với sự cố từ truy cập bất thường / dò quét lỗ hổng / làm nghẽn cổng vào: Khi tác nhân gây lỗi đã bị áp giới hạn tốc độ (`Rate-limit`) hoặc khóa tạm thời (`Temporary IP Block` có thời hạn tự mở `TTL 15 phút`) tại tầng cổng đón lưu lượng (Nginx/WAF) và tỷ lệ lỗi `5xx`/`4xx` trên cổng vào hạ về mức bình thường sau 2 phút kiểm chứng (`Self-Check`).
    - Với sự cố nằm sâu ở tầng ứng dụng hoặc cơ sở dữ liệu dùng chung (vượt quá phạm vi tự chặn ở cổng mạng): Khi hệ thống đã gom xong bộ bằng chứng có dẫn nguồn dòng log xuyên tầng kèm đề xuất xử lý và đánh thức đúng kỹ sư phụ trách (`HITL`).

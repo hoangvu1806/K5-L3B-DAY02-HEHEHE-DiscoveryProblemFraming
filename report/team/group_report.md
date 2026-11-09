@@ -7,7 +7,7 @@
 
 - Tên nhóm: HEHEHE
 - Thành viên: xem `TEAM.md` (Bùi Đặng Nhật Nguyên, Đỗ Hoàng Vũ, Trần Gia Bảo, Trần Thị Hà Anh)
-- Candidate problem được chọn (1 câu): Kỹ sư trực ca vận hành mất 90-120 phút mỗi sự cố để lần mò thủ công qua hàng chục nguồn log rời rạc và thiếu cơ chế AI tự chủ có kiểm soát (Agentic AI phân quyền theo cột mốc `Confidence Score` kết hợp `HITL`) để vừa cô lập tức thì bất thường rõ bằng chứng vào ban đêm vừa giữ lại ca nhạy cảm chờ con người duyệt.
+- Candidate problem được chọn (1 câu): Kỹ sư trực ca vận hành mất 15-30 phút để khoanh vùng tầng lỗi qua nhiều nguồn log rời rạc trong giờ hành chính, nhưng sự cố ngoài giờ (nhất là ban đêm) bị phát hiện và phản ứng rất trễ và thiếu cơ chế AI tự chủ có kiểm soát (Agentic AI phân quyền theo cột mốc `Confidence Score` kết hợp `HITL`) để vừa cô lập kịp thời bất thường rõ bằng chứng vào ban đêm vừa giữ lại ca nhạy cảm chờ con người duyệt.
 - Quyết định cuối: **Go — pilot có điều kiện** tại tầng Nginx, bắt đầu bằng shadow/read-only và chỉ mở auto-containment cục bộ sau khi đạt các cổng an toàn.
 
 ---
@@ -44,13 +44,13 @@
 Gốc là **1 outcome**. Nhánh là **opportunity** (nhu cầu, pain), không phải tính năng hay công cụ.
 
 ```text
-OUTCOME: Giảm thời gian từ lúc phát sinh bất thường đến lúc khoanh vùng đúng nguyên nhân gốc và cô lập sự cố từ 90-120 phút xuống dưới 5 phút (với ca đủ độ tin cậy tự động) và dưới 15 phút (với ca chờ người duyệt HITL), giữ tỷ lệ cảnh báo sai dưới 15% và 0 lần chặn nhầm kết nối hợp lệ.
+OUTCOME: Rút ngắn thời gian khoanh vùng tầng lỗi qua nhiều nguồn log (hiện mất 15-30 phút trong giờ theo phỏng vấn CP4) và giảm độ trễ từ lúc phát sinh bất thường ngoài giờ đến lúc cô lập xong xuống mục tiêu pilot dưới 5 phút (với ca đủ điều kiện tự cô lập) và dưới 15 phút (với ca chờ người duyệt HITL), giữ tỷ lệ cảnh báo sai dưới 15% và 0 lần chặn nhầm kết nối hợp lệ.
 │
-├── Opportunity A (Đầu vào cảnh báo): Kỹ sư trực ca bị quá tải bởi cảnh báo giả vào giờ cao điểm đầu tuần (như sáng thứ Hai) do lưu lượng giữ phiên tăng tự nhiên, làm mất 30-40 phút kiểm tra tay và gây nguy cơ kích hoạt nhầm quy trình phản ứng.
+├── Opportunity A (Đầu vào cảnh báo): Kỹ sư trực ca bị quá tải bởi cảnh báo giả vào giờ cao điểm đầu tuần (như sáng thứ Hai) hoặc bị đánh thức lúc nửa đêm bởi cảnh báo nhiễu, gây nguy cơ kích hoạt nhầm quy trình phản ứng.
 │
-├── Opportunity B (Điều tra liên tầng): Khi có triệu chứng lỗi ở cổng đón lưu lượng (như Nginx), kỹ sư mất 55 phút gõ lệnh lọc nhiễu và tự mò mẫm mở tiếp hàng chục nguồn log rời rạc (tường lửa, DNS, xác thực, ứng dụng, database) trên nhiều máy chủ để tìm nguyên nhân gốc.
+├── Opportunity B (Điều tra liên tầng): Khi có triệu chứng lỗi ở cổng đón lưu lượng (như Nginx), kỹ sư vẫn phải lọc nhiễu và tra chéo qua nhiều nguồn log rời rạc (tường lửa, DNS, xác thực, ứng dụng, database) mất 15-30 phút thực tế (giả định v0 ban đầu trước phỏng vấn là 55 phút) để tìm đúng tầng gây lỗi.
 │
-└── Opportunity C (Phản ứng ca đêm & Bàn giao HITL): Vào ban đêm lúc vắng người trực màn hình, các đợt dò quét lỗ hổng hoặc gây nghẽn đã rõ bằng chứng không được cô lập kịp thời, trong khi các ca liên tầng nhạy cảm lại thiếu bản tổng hợp bằng chứng có dẫn nguồn để con người phê duyệt nhanh trong vài phút.
+└── Opportunity C (Phản ứng ca đêm & Bàn giao HITL): Vào ban đêm lúc vắng người trực màn hình (2/5 người được phỏng vấn thường xuyên bị gọi dậy giữa đêm), các đợt dò quét lỗ hổng hoặc gây nghẽn rõ bằng chứng không được cô lập kịp thời, trong khi các ca liên tầng nhạy cảm lại thiếu bản tổng hợp bằng chứng có dẫn nguồn để con người phê duyệt nhanh trong vài phút.
 ```
 
 Những ý đã gạch bỏ vì là solution đội lốt opportunity:
@@ -133,33 +133,33 @@ Tổng hợp:
 
 ### 4.1. Quy trình hiện tại
 
-Sơ đồ quy trình xử lý sự cố hiện tại (6 bước thủ công, tổng thời gian từ lúc phát sinh bất thường đến lúc cô lập xong khoảng 90-120 phút, trong đó 30-60 phút là độ trễ phát hiện và khoảng 90 phút là thời gian kỹ sư thao tác):
+Sơ đồ quy trình xử lý sự cố hiện tại (6 bước thủ công; theo kết quả phỏng vấn CP4, việc khoanh vùng tầng lỗi trực tiếp tại các bước 2-4 thường mất **15-30 phút** trong giờ hành chính thay vì 55 phút như giả định v0 ban đầu, nhưng với sự cố **ngoài giờ/ban đêm** thì độ trễ phát hiện và huy động người xử lý kéo dài đáng kể):
 
 ```mermaid
 flowchart TD
-    S1["Bước 1: Nhận báo lỗi trễ từ người dùng hoặc cảnh báo ngưỡng tĩnh (Độ trễ phát hiện: 30-60 phút)"]
-    S2["Bước 2: Mở log cổng đón lưu lượng (như Nginx access/error log) xem triệu chứng (10 phút)"]
-    S3["Bước 3: Gõ lệnh lọc bỏ bản ghi nhiễu (giữ phiên, cache) tìm khung giờ đỉnh lỗi (20 phút - BOTTLENECK 1)"]
-    S4["Bước 4: Đăng nhập từng máy chủ tra chéo sang log tường lửa, DNS, ứng dụng, database (35 phút - BOTTLENECK 2)"]
-    S5["Bước 5: Tự đánh giá độ chắc chắn rồi gõ lệnh chặn IP hoặc báo đội ứng dụng (10 phút - BOTTLENECK BAN ĐÊM)"]
-    S6["Bước 6: Theo dõi lại log xác nhận lỗi đã hạ và viết báo cáo sự cố (15 phút)"]
+    S1["Bước 1: Nhận báo lỗi từ người dùng hoặc cảnh báo ngưỡng tĩnh (Ngoài giờ/ban đêm bị trễ phát hiện và phải gọi người trực thức dậy)"]
+    S2["Bước 2: Mở dashboard hoặc log cổng đón lưu lượng (như Nginx access/error log) xem triệu chứng (3-5 phút)"]
+    S3["Bước 3: Lọc bỏ bản ghi nhiễu (giữ phiên, cache) tìm khung giờ đỉnh lỗi (5-10 phút - Giả định v0: 20 phút - BOTTLENECK 1)"]
+    S4["Bước 4: Tra chéo sang log tường lửa, DNS, ứng dụng, database để khoanh vùng tầng lỗi (10-15 phút - Giả định v0: 35 phút - BOTTLENECK 2)"]
+    S5["Bước 5: Tự đánh giá độ chắc chắn rồi gõ lệnh chặn IP hoặc báo đội ứng dụng (5-10 phút thao tác, nhưng trễ lâu vào ban đêm - BOTTLENECK BAN ĐÊM)"]
+    S6["Bước 6: Theo dõi lại log xác nhận lỗi đã hạ và ghi nhận sự cố (10-15 phút)"]
 
     S1 --> S2 --> S3 --> S4 --> S5 --> S6
 ```
 
 | Bước | Actor | Input | Output | Thời gian / tần suất | Ghi chú |
 |---:|---|---|---|---|---|
-| 1 | Người dùng hệ thống / Kỹ sư trực ca (On-call) | Dịch vụ phản hồi chậm, báo lỗi hàng loạt hoặc cảnh báo ngưỡng tĩnh | Tin nhắn / ticket báo sự cố trong kênh vận hành | Độ trễ 30-60 phút sau khi lỗi bắt đầu tăng (trung bình 2-3 sự cố đáng kể/tuần) | Ban đêm không có người trực màn hình nên phát hiện rất muộn |
-| 2 | Kỹ sư trực ca (IT / NetOps On-call) | Thông báo sự cố, quyền truy cập máy chủ cổng vào | Các dòng log triệu chứng ban đầu tại cổng proxy (như Nginx `access.log`, `error.log`) | 10 phút/lần | Mới chỉ thấy triệu chứng bề nổi (mã lỗi `5xx`/`4xx`), chưa biết nguyên nhân gốc |
-| 3 | Kỹ sư trực ca | Hàng trăm nghìn dòng log thô ở cổng vào | Khung giờ đỉnh lỗi, danh sách đường dẫn hoặc IP nghi vấn sau khi tách bỏ kết nối giữ phiên | 20 phút/lần | **Bottleneck 1:** Tốn công gõ lệnh cắt lọc thủ công vì log chứa rất nhiều bản ghi giữ phiên (WebSocket) và kiểm tra sức khỏe định kỳ |
-| 4 | Kỹ sư trực ca | Khung giờ đỉnh lỗi và dấu hiệu từ cổng vào | Nguyên nhân gốc được xác định (do dò quét lỗ hổng, lỗi DNS, treo dịch vụ backend hay database) | 35 phút/lần | **Bottleneck 2 (Nặng nhất):** Công ty có hàng chục nguồn log rời rạc ở nhiều tầng; kỹ sư phải tự suy đoán và đăng nhập từng máy chủ để đối chiếu mốc thời gian |
-| 5 | Kỹ sư trực ca / Đội phát triển backend | Kết luận nguyên nhân gốc và mức độ rủi ro | Thực thi lệnh cô lập (như chặn IP, giới hạn tốc độ) hoặc bàn giao bằng chứng cho đội ứng dụng | 10 phút thao tác (nhưng vào ban đêm có thể trễ vài giờ vì chờ người thức dậy xử lý) | **Bottleneck 3 (Ban đêm):** Thiếu cơ chế tự động thực thi an toàn cho các ca đã rõ bằng chứng lúc vắng người trực |
-| 6 | Kỹ sư trực ca | Trạng thái hệ thống sau khi can thiệp và lịch sử câu lệnh đã gõ | Xác nhận tỷ lệ lỗi đã về mức bình thường và bản tóm tắt sự cố | 15 phút/lần | Phải tự gom lại các đoạn log đã đọc từ nhiều cửa sổ terminal để viết báo cáo |
+| 1 | Người dùng hệ thống / Kỹ sư trực ca (On-call) | Dịch vụ phản hồi chậm, báo lỗi hàng loạt hoặc cảnh báo ngưỡng tĩnh | Tin nhắn / cảnh báo sự cố trong kênh vận hành | Trong giờ phát hiện nhanh qua dashboard; ngoài giờ/ban đêm bị trễ đáng kể (2/5 người được hỏi thường bị gọi dậy giữa đêm) | **Điểm nghẽn lớn nhất ngoài giờ:** Ban đêm vắng người canh màn hình, hoặc bị đánh thức bởi cả cảnh báo giả lẫn sự cố thật |
+| 2 | Kỹ sư trực ca (IT / NetOps / DevOps On-call) | Thông báo sự cố, quyền truy cập dashboard hoặc máy chủ cổng vào | Các dòng log triệu chứng ban đầu tại cổng proxy (như Nginx `access.log`, `error.log`) | 3-5 phút/lần (giả định v0: 10 phút) | Mới chỉ thấy triệu chứng bề nổi (mã lỗi `5xx`/`4xx`), chưa biết nguyên nhân gốc nằm ở tầng nào |
+| 3 | Kỹ sư trực ca | Các dòng log hoặc cảnh báo ở cổng vào | Khung giờ đỉnh lỗi, danh sách đường dẫn hoặc IP nghi vấn sau khi tách bỏ kết nối giữ phiên | 5-10 phút/lần (giả định v0: 20 phút) | **Bottleneck 1:** Tốn công lọc nhiễu vì log chứa nhiều bản ghi giữ phiên (WebSocket) và cảnh báo giả theo chu kỳ |
+| 4 | Kỹ sư trực ca | Khung giờ đỉnh lỗi và dấu hiệu từ cổng vào | Khoanh vùng được tầng gây lỗi (do dò quét lỗ hổng, lỗi DNS, treo dịch vụ backend hay database) | 10-15 phút/lần (giả định v0: 35 phút; tổng khoanh vùng bước 2-4 theo phỏng vấn CP4 là **15-30 phút**) | **Bottleneck 2:** Dù đã có Grafana/Loki hoặc Datadog, khi cần đào sâu vẫn phải chuyển qua nhiều nguồn log hoặc `ssh` vào máy dùng `grep`/`tail` |
+| 5 | Kỹ sư trực ca / Đội phát triển backend | Kết luận tầng lỗi và mức độ rủi ro | Thực thi lệnh cô lập (như chặn IP, giới hạn tốc độ) hoặc bàn giao bằng chứng cho đội ứng dụng | 5-10 phút thao tác (nhưng ban đêm bị kéo dài do phải chờ kỹ sư thức dậy mở máy kiểm tra) | **Bottleneck 3 (Ban đêm):** Thiếu cơ chế tự động cô lập có điều kiện (`Whitelist`, `TTL`, `Rollback`) lúc vắng người trực |
+| 6 | Kỹ sư trực ca | Trạng thái hệ thống sau khi can thiệp và lịch sử câu lệnh đã gõ | Xác nhận tỷ lệ lỗi đã về mức bình thường và ghi nhận sự cố | 10-15 phút/lần | Phải tự gom lại các đoạn log đã đọc để bàn giao hoặc viết báo cáo hậu kiểm |
 
-**Bottleneck chính:**
+**Bottleneck chính (đã hiệu chỉnh sau kiểm chứng CP4):**
 
-- **Điểm nghẽn điều tra (Bước 3 + Bước 4, mất 55 phút thao tác trực tiếp):** Kỹ sư phải lọc nhiễu bằng tay rồi tự mò mẫm mở tiếp hàng chục nguồn log khác nhau (tường lửa, DNS, xác thực, ứng dụng, database) trên nhiều máy chủ mà không có công cụ tự động chọn nhánh truy vết.
-- **Điểm nghẽn phản ứng ngoài giờ (Bước 1 + Bước 5, mất thêm 40-70 phút):** Vào ban đêm, dù có những đợt dò quét lỗ hổng hoặc gửi truy vấn dồn dập rất rõ bằng chứng ở tầng cổng, hệ thống vẫn phải chờ con người thức dậy đọc log rồi mới gõ lệnh cô lập.
+- **Điểm nghẽn phản ứng ngoài giờ và cảnh báo giả (Bước 1 + Bước 5):** Phỏng vấn 5 người ở CP4 cho thấy nỗi đau nặng nhất không phải là đọc log trong giờ hành chính, mà là **sự cố ban đêm bị phản ứng trễ** (2/5 người thường xuyên bị gọi dậy giữa đêm cho cả sự cố thật lẫn cảnh báo giả) và chưa có cơ chế tự cô lập an toàn (có `Whitelist`, giới hạn thời gian chặn và `Rollback`).
+- **Điểm nghẽn lọc nhiễu và tra chéo đa nguồn log (Bước 3 + Bước 4, mất 15-30 phút theo phỏng vấn thực tế, thấp hơn mức giả định v0 55 phút):** Kỹ sư vẫn phải lọc nhiễu và đối chiếu qua nhiều nguồn log khác nhau để khoanh vùng đúng tầng gây lỗi trước khi dám ra quyết định xử lý.
 
 ### 4.2. Quy trình tương lai
 
@@ -208,10 +208,10 @@ flowchart TD
 | Chỉ số | Trước | Sau (kỳ vọng) | Ghi chú |
 |---|---:|---:|---|
 | Số bước | 6 bước tuần tự | 4 bước tự động hóa + 1 bước duyệt/kiểm tra | Rút gọn toàn bộ khâu lọc nhiễu và tra chéo log thủ công |
-| Tổng thời gian | 90-120 phút (gồm 30-60 phút phát hiện trễ + 60-70 phút điều tra và xử lý) | Dưới 5 phút (với ca `>= 85%` tự cô lập) hoặc dưới 15 phút (với ca `60% - < 85%` chờ người duyệt `HITL`) | Đo từ lúc xuất hiện chuỗi lỗi bất thường ở cổng vào đến lúc cô lập xong hoặc bàn giao đúng nguyên nhân gốc |
-| Số bước thủ công | 6/6 bước (100% phụ thuộc kỹ sư đọc log và gõ lệnh) | 0 bước (ca đêm đủ ngưỡng tự tin `>= 85%`) hoặc 1 bước bấm duyệt `HITL` (ca nhạy cảm) | Giải phóng kỹ sư khỏi việc thức đêm đọc hàng trăm nghìn dòng log thô |
-| Bottleneck chính | Bước 3 & 4 (55 phút lọc nhiễu và mò tìm qua hàng chục nguồn log) + Bước 5 (chờ người xử lý ban đêm) | Bước chờ kỹ sư xác nhận ở nhánh `HITL` (2-5 phút với hồ sơ bằng chứng đã gom sẵn) | Kỹ sư không phải tự đi tìm log nữa mà chỉ kiểm tra bằng chứng có dẫn nguồn |
-| Rủi ro mới phát sinh | Không có rủi ro từ AI (nhưng chịu rủi ro gián đoạn dịch vụ kéo dài hàng giờ) | Nguy cơ điểm tự tin ảo dẫn tới chặn nhầm kết nối hợp lệ, hoặc log độc hại chứa câu lệnh lừa mô hình (Prompt Injection qua log) | Kiểm soát bằng công thức `Confidence Score` định lượng, `Whitelist`, khóa chặt trong `Parameterized Runbook` và nút `1-click Rollback` |
+| Tổng thời gian | Khoanh vùng tầng lỗi mất **15-30 phút** trong giờ (theo phỏng vấn CP4); ngoài giờ/ban đêm cộng thêm độ trễ phát hiện và gọi người trực thức dậy (giả định v0 ban đầu gộp chung là 90-120 phút) | Mục tiêu pilot đề xuất: dưới 5 phút (với ca `>= 85%` đủ điều kiện tự cô lập) hoặc dưới 15 phút (với ca `60% - < 85%` chờ người duyệt `HITL`) | Tách rõ baseline khoanh vùng (15-30 phút) với thời gian từ lúc xuất hiện bất thường đến lúc cô lập xong ngoài giờ |
+| Số bước thủ công | 6/6 bước (100% phụ thuộc kỹ sư đọc log và gõ lệnh) | 0 bước (ca đêm đủ ngưỡng tự tin `>= 85%`) hoặc 1 bước bấm duyệt `HITL` (ca nhạy cảm) | Giải phóng kỹ sư khỏi việc bị dựng dậy giữa đêm vì cảnh báo giả hoặc các đợt dò quét đơn giản |
+| Bottleneck chính | Phản ứng trễ ngoài giờ/ban đêm (Bước 1 & 5) + Lọc nhiễu và tra chéo đa nguồn log (Bước 3 & 4: 15-30 phút thực tế; giả định v0 là 55 phút) | Bước chờ kỹ sư xác nhận ở nhánh `HITL` (2-5 phút với hồ sơ bằng chứng đã gom sẵn) | Kỹ sư không phải tự đi tìm log nữa mà chỉ kiểm tra bằng chứng có dẫn nguồn |
+| Rủi ro mới phát sinh | Không có rủi ro từ AI (nhưng chịu rủi ro phản ứng trễ ban đêm và trực ca bị gọi dậy nhiều lần) | Nguy cơ điểm tự tin ảo dẫn tới chặn nhầm kết nối hợp lệ, hoặc log độc hại chứa câu lệnh lừa mô hình (Prompt Injection qua log) | Kiểm soát bằng công thức `Confidence Score` định lượng, `Whitelist`, khóa chặt trong `Parameterized Runbook` (`TTL 15 phút`) và nút `1-click Rollback` |
 
 ---
 
@@ -280,7 +280,7 @@ Vì sao:
 | **Prediction** - AI dự đoán / tạo ra gì? | 1. Dự đoán nhánh nguồn log cần mở tiếp theo để tìm nguyên nhân gốc.<br>2. Xác định nguyên nhân khả dĩ kèm trích dẫn dòng log gốc (timestamp, dịch vụ, mã lỗi).<br>3. Tính điểm tự tin tổng hợp (`Confidence Score` từ `0-100%`) và đề xuất hàm khắc phục tham số hóa (`Parameterized Runbook`) tương ứng. |
 | **Judgment** - con người cân nhắc, quyết định gì? | 1. **Ở giai đoạn thiết kế:** Con người quy định công thức tính `Confidence Score`, thiết lập các cột mốc phân quyền (`60%`, `85%`), danh sách trắng (`Whitelist`) và danh mục hàm Runbook được phép gọi.<br>2. **Trong lúc vận hành:** Với các ca có `Confidence Score` từ `60% đến < 85%` hoặc chạm tới dịch vụ cốt lõi dùng chung, kỹ sư trực ca xem xét bộ bằng chứng đã gom sẵn để bấm **Duyệt** hoặc **Bác bỏ** (`HITL`), hoặc bấm **Hoàn tác 1 chạm (`Rollback`)** nếu phát hiện Agent chặn sai ở ca tự động. |
 | **Action** - hành động cuối cùng là gì, ai làm? | - **Nếu `Confidence Score >= 85%` và thuộc phạm vi cục bộ an toàn ở cổng vào:** Agent tự động kích hoạt `Parameterized Runbook` (ví dụ áp giới hạn tốc độ hoặc cô lập tạm thời IP tấn công trong 15 phút), sau đó tự đọc log kiểm tra lại sau 2 phút.<br>- **Nếu `60% <= Confidence Score < 85%` hoặc đụng dịch vụ cốt lõi:** Kỹ sư trực ca bấm xác nhận thực thi hoặc chuyển tiếp hồ sơ bằng chứng cho đội backend sửa lỗi. |
-| **Outcome** - đo kết quả bằng gì? | 1. Thời gian từ lúc phát sinh bất thường đến lúc cô lập xong hoặc khoanh vùng đúng nguyên nhân gốc (mục tiêu giảm từ `90-120 phút` xuống `< 5 phút` với ca tự động và `< 15 phút` với ca `HITL`).<br>2. Tỷ lệ cảnh báo sai dưới `15%`.<br>3. Số lần tự động chặn nhầm dải IP nội bộ / đối tác hợp lệ bằng `0`. |
+| **Outcome** - đo kết quả bằng gì? | 1. Thời gian khoanh vùng tầng lỗi (baseline phỏng vấn `15-30 phút`) và thời gian từ lúc phát sinh bất thường ngoài giờ đến lúc cô lập xong (mục tiêu pilot đề xuất: `< 5 phút` với ca đủ điều kiện tự động và `< 15 phút` với ca `HITL`, thay vì giả định v0 ban đầu `90-120 phút`).<br>2. Tỷ lệ cảnh báo sai dưới `15%`.<br>3. Số lần tự động chặn nhầm dải IP nội bộ / đối tác hợp lệ bằng `0`. |
 | **Input** - AI cần dữ liệu đầu vào gì mỗi lần chạy? Có sẵn không? | 1. Luồng log thời gian thực từ cổng vào (như Nginx `access.log`, `error.log`) và quyền truy cập **chỉ đọc (`Read-only`)** tới log các dịch vụ liên quan (đã có sẵn trên máy chủ công ty).<br>2. Số liệu thống kê baseline theo khung giờ/thứ trong tuần (tự tổng hợp từ log lịch sử).<br>3. Danh sách trắng (`Whitelist` IP/dịch vụ) và bộ kịch bản chuẩn (`Parameterized Runbooks`). |
 | **Feedback** - lấy phản hồi ở đâu để cải thiện? | 1. Kết quả tự kiểm tra log 2 phút sau khi thực thi (`Self-Check`: tỷ lệ lỗi `5xx`/`4xx` có giảm thật không).<br>2. Hành động bấm nút của kỹ sư trực ca (`Duyệt`, `Bác bỏ` ở nhánh `HITL`, hoặc bấm `1-click Rollback`).<br>3. Nhãn nguyên nhân gốc thực tế sau mỗi biên bản họp rút kinh nghiệm sự cố (Post-mortem) để hiệu chỉnh lại trọng số `Confidence Score`. |
 
