@@ -12,7 +12,7 @@
 |---:|---|---|---|---|
 | 1 | Bùi Đặng Nhật Nguyên | 2A202603937 | Owner problem, Domain expert - vẽ quy trình, thiết kế khung quản trị Agentic AI (`Confidence Score` + `HITL`), AI Canvas, so sánh 4 mức AI | double-n-021 |
 | 2 | Đỗ Hoàng Vũ | 2A202603920 | Kiểm chứng (phỏng vấn), điều phối, quản trị repo | hoangvu1806 |
-| 3 | Trần Gia Bảo | 2A202603914 | Người viết — Problem Statement v0 và v1, 3–5 tiêu chí đánh giá | *(tự cập nhật)* |
+| 3 | Trần Gia Bảo | 2A202603914 | Người viết — Problem Statement v0 và v1, 3–5 tiêu chí đánh giá | Jay-Gabriel |
 | 4 | Trần Thị Hà Anh | 2A202603887 | Research + Quyết định — bảng công cụ có link, 4 rủi ro, ngưỡng dừng | hnha02 |
 
 Không ghi email hay số điện thoại vào bảng này, vì repo có thể để public.
