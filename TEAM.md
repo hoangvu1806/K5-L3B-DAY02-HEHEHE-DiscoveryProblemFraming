@@ -107,21 +107,30 @@ Mỗi thành viên tự điền mục của mình.
 
 **Phần việc phụ trách:**
 
-- Người viết chính: Problem Statement v0 (CP5), Problem Statement v1 (CP6)
-- Bảng thay đổi v0 → v1 kèm lý do
-- 3–5 tiêu chí đánh giá (eval) cho đầu ra AI
+- Người phụ trách nội dung Problem Statement v0 (CP5), Problem Statement v1 (CP6), bảng thay đổi và 3–5 tiêu chí đánh giá (eval).
+- Chuẩn bị 3 Problem Cards cá nhân về Text-to-SQL để nhóm đưa vào bảng pitch, cluster và shortlist ở CP3.
 
-**Đóng góp cụ thể** (mình đã làm gì, ra sản phẩm gì):
+**Đóng góp cụ thể** (đã có sản phẩm lưu trên repo):
 
--
+- Hoàn thành báo cáo cá nhân CP1 (8 problem) và CP2 (3 Problem Cards về truy xuất dữ liệu nghiệp vụ, chuyển ngôn ngữ tự nhiên thành SQL và kiểm chứng kết quả).
+- Bổ sung nội dung mục 5 `Problem Statement v0` của báo cáo nhóm với 6 trường Actor, Quy trình, Bottleneck, Impact, Success Metric và Boundary.
+- Bổ sung mục 7 `Problem Statement v1 + tiêu chí đánh giá`: 9 trường nội dung, bảng đối chiếu v0 → v1 có lý do và 5 tiêu chí eval (bằng chứng truy xuất, khoanh vùng đúng, lọc cảnh báo giả, an toàn phân quyền, thời gian phản ứng).
+- Đối chiếu kết quả tổng hợp CP4 để phân biệt thời gian **khoanh vùng tầng lỗi 15–30 phút** với giả định ban đầu **90–120 phút từ khi có bất thường đến lúc cô lập**, tránh dùng hai chỉ số khác định nghĩa làm baseline và target.
+- Gửi các thay đổi lên nhánh `TranGiaBao` và mở PR để nhóm trưởng review; không nhận là người trực tiếp phỏng vấn CP4 hay người quyết định cuối CP6.
 
-**Bằng chứng** (phần nào trong `group_report.md`, file nào trong `report/assets/`, commit nào):
+**Bằng chứng** (đường dẫn trong repo và commit):
 
--
+- `report/individual/2A202603914_TranGiaBao.md` — CP1, CP2 và mục 4–6 báo cáo cá nhân.
+- `report/team/group_report.md` — mục **2.1** (candidate #7–#9 của Bảo), **2.2** (Cluster C — Text-to-SQL), **5** (Problem Statement v0), **7** (Problem Statement v1, thay đổi v0→v1, 5 eval).
+- `report/assets/2A202603914_cp5_cp6_deliverables.md` và `report/assets/2A202603914_cp5_cp6_review_notes.md` — phân tích và ghi chú phục vụ review.
+- GitHub commit [`48a69f0`](https://github.com/hoangvu1806/K5-L3B-DAY02-HEHEHE-DiscoveryProblemFraming/commit/48a69f097c2afe119c63c45ca5046d30d81aad93) và [PR #11](https://github.com/hoangvu1806/K5-L3B-DAY02-HEHEHE-DiscoveryProblemFraming/pull/11): cập nhật trực tiếp mục 5, 7 báo cáo nhóm.
+- GitHub commit [`f18ae11`](https://github.com/hoangvu1806/K5-L3B-DAY02-HEHEHE-DiscoveryProblemFraming/commit/f18ae11cc3fa5a896a865c165d73f34bbfde2bc6) và [PR #12](https://github.com/hoangvu1806/K5-L3B-DAY02-HEHEHE-DiscoveryProblemFraming/pull/12): cập nhật bài cá nhân.
 
-**Điều mình học được từ phần nhóm:**
+**Bài học chuyên môn từ phần được giao:**
 
--
+- Khi xây dựng Problem Statement, phải phân biệt **thời gian phát hiện**, **thời gian khoanh vùng** và **thời gian cô lập**; baseline và target chỉ so sánh được khi đo cùng một mốc.
+- Metric tốc độ phải đi kèm metric chất lượng và an toàn. Với đề tài này, phản ứng nhanh nhưng chặn nhầm người dùng hợp lệ không thể xem là thành công.
+- Cần thử phương án `No AI / Rule / Workflow` trước khi nâng lên Agent; trong phương án Agent có kiểm soát, quyền thực thi phải tách khỏi suy luận ngôn ngữ và luôn có `HITL`, `whitelist`, `rollback`.
 
 ### Trần Thị Hà Anh — 2A202603887
 
